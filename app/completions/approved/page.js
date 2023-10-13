@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next"
 import { authOptions } from '../../api/auth/[...nextauth]/route'
 import { redirect } from 'next/navigation'
+import Empty from "@/components/empty"
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
@@ -11,6 +12,10 @@ export default async function Home() {
 
   const res = await fetch(process.env.NEXTAUTH_URL + "/api/data/completions/approved");
   const approvedCompletions = await res.json();
+
+  if (!approvedCompletions || approvedCompletions.length === 0) {
+    return <Empty empty={{description: "No completions were approved yet"}} />
+  }
 
   return (
     <main>

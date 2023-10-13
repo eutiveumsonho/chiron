@@ -4,6 +4,7 @@ const inter = Inter({ subsets: ['latin'] })
 import Dashboard from '@/components/dashboard';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/route';
+import { StyledComponentsRegistry } from '@/components/styled-registry';
 
 export const metadata = {
   title: 'Human-in-the-loop',
@@ -15,7 +16,7 @@ export default async function RootLayout({ children }) {
   
   return (
     <html lang="en">
-      <body className={inter.className}><Dashboard serverSession={session}>{children}</Dashboard></body>
+      <body className={inter.className}><StyledComponentsRegistry><Dashboard serverSession={session}>{children}</Dashboard></StyledComponentsRegistry></body>
     </html>
   )
 }
