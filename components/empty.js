@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Box, Button, Text } from "grommet";
 import { useRouter } from "next/navigation";
@@ -16,13 +16,15 @@ export default function Empty(props) {
       >
         {empty.description}
       </Text>
-      {empty?.label && empty?.actionRoute ? <Box>
-        <Button
-          label={empty.label}
-          primary
-          onClick={() => push(empty.actionRoute)}
-        />
-      </Box> : null}
+      {empty?.label && empty?.actionRoute ? (
+        <Box>
+          <Button
+            label={empty.label}
+            primary
+            onClick={() => push(empty.actionRoute)}
+          />
+        </Box>
+      ) : null}
     </Box>
   );
 }

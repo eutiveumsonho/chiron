@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Box, Text } from "grommet";
 import Image from "next/legacy/image";
@@ -8,7 +8,7 @@ export function Logo(props) {
   const { color = "purple", noTitle = false } = props;
 
   return (
-    <Link href={'/completions/pending'} legacyBehavior>
+    <Link href={"/completions/pending"} legacyBehavior>
       <Box align="center" gap="medium">
         <Image
           src={`/${color}-cloud.svg`}

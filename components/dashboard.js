@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { cloneElement, useContext } from "react";
 import {
@@ -15,10 +15,7 @@ import {
   Grommet,
   grommet,
 } from "grommet";
-import {
-  Logout,
-  DocumentTest,
-} from "grommet-icons";
+import { Logout, DocumentTest } from "grommet-icons";
 import { BRAND_HEX } from "../lib/config";
 import { Logo } from "./logo";
 import { usePathname, useRouter } from "next/navigation";
@@ -42,7 +39,9 @@ const SidebarHeader = (props) => {
       margin={{ bottom: "xxsmall" }}
       justify="center"
     >
-      {serverSession?.user?.image ? <Avatar src={serverSession.user.image} /> : null}
+      {serverSession?.user?.image ? (
+        <Avatar src={serverSession.user.image} />
+      ) : null}
       {isSmall ? null : <Text>{serverSession?.user?.name}</Text>}
     </Box>
   );
@@ -94,7 +93,7 @@ const SidebarFooter = (props) => {
     <Nav>
       <SidebarButton
         icon={<Logout />}
-        label={'Logout'}
+        label={"Logout"}
         onClick={async () => {
           await signOut({
             redirect: true,
@@ -112,11 +111,11 @@ const SidebarFooter = (props) => {
 const MainNavigation = (props) => {
   const { size, deviceType } = props;
   const { push } = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const completions = '/completions/';
+  const completions = "/completions/";
 
-  const matchCompletions = pathname.includes(completions)
+  const matchCompletions = pathname.includes(completions);
 
   if (deviceType === "mobile" || size === "small") {
     return (
@@ -135,7 +134,7 @@ const MainNavigation = (props) => {
     <Nav gap="medium" fill="vertical" responsive={false}>
       <SidebarButton
         icon={<DocumentTest />}
-        label={'Completions'}
+        label={"Completions"}
         selected={matchCompletions}
         onClick={() => push(completions)}
       />
@@ -243,61 +242,64 @@ export default function Dashboard(props) {
   const isSmall = deviceType === "mobile" || size === "small";
 
   return (
-    <>    <Grommet full theme={grommet}>
-      <Header
-        pad="small"
-        style={{
-          position: "fixed",
-          width: "100vw",
-          borderBottom: `1px solid ${BRAND_HEX}`,
-          zIndex: "10",
-        }}
-        background="light-1"
-        elevation="large"
-      >
-        <Box
+    <>
+      {" "}
+      <Grommet full theme={grommet}>
+        <Header
+          pad="small"
           style={{
-            display: "flex",
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            margin: "auto",
-            maxWidth: "96rem",
-            // Trick to make the box-shadow from the sidebar and header look good
-            zIndex: "9",
+            position: "fixed",
+            width: "100vw",
+            borderBottom: `1px solid ${BRAND_HEX}`,
+            zIndex: "10",
           }}
+          background="light-1"
+          elevation="large"
         >
-          <Logo noTitle />
-        </Box>
-      </Header>
-      <Page background="background-front" kind="full">
-        <Box direction="row" height={{ min: "100%" }}>
-          <Sidebar
-            serverSession={serverSession}
-            size={size}
-            deviceType={deviceType}
-          />
-          <PageContent
+          <Box
             style={{
-              width: isSmall
-                ? `calc(100vw - ${MOBILE_SIDEBAR_WIDTH})`
-                : `calc(100vw - ${DESKTOP_SIDEBAR_WIDTH})`,
-              minHeight: isSmall
-                ? `calc(100vh - ${MOBILE_HEADER_HEIGHT})`
-                : `calc(100vh - ${DESKTOP_HEADER_HEIGHT})`,
-              minWidth: "0px",
-              marginTop: isSmall ? MOBILE_HEADER_HEIGHT : DESKTOP_HEADER_HEIGHT,
-              marginLeft: isSmall
-                ? MOBILE_SIDEBAR_WIDTH
-                : DESKTOP_SIDEBAR_WIDTH,
+              display: "flex",
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              margin: "auto",
+              maxWidth: "96rem",
+              // Trick to make the box-shadow from the sidebar and header look good
+              zIndex: "9",
             }}
           >
-            {children}
-          </PageContent>
-        </Box>
-      </Page>
-    </Grommet>
+            <Logo noTitle />
+          </Box>
+        </Header>
+        <Page background="background-front" kind="full">
+          <Box direction="row" height={{ min: "100%" }}>
+            <Sidebar
+              serverSession={serverSession}
+              size={size}
+              deviceType={deviceType}
+            />
+            <PageContent
+              style={{
+                width: isSmall
+                  ? `calc(100vw - ${MOBILE_SIDEBAR_WIDTH})`
+                  : `calc(100vw - ${DESKTOP_SIDEBAR_WIDTH})`,
+                minHeight: isSmall
+                  ? `calc(100vh - ${MOBILE_HEADER_HEIGHT})`
+                  : `calc(100vh - ${DESKTOP_HEADER_HEIGHT})`,
+                minWidth: "0px",
+                marginTop: isSmall
+                  ? MOBILE_HEADER_HEIGHT
+                  : DESKTOP_HEADER_HEIGHT,
+                marginLeft: isSmall
+                  ? MOBILE_SIDEBAR_WIDTH
+                  : DESKTOP_SIDEBAR_WIDTH,
+              }}
+            >
+              {children}
+            </PageContent>
+          </Box>
+        </Page>
+      </Grommet>
     </>
-
   );
 }

@@ -1,4 +1,3 @@
-
 <p align="center">
   <img alt="Eu tive um sonho - HITL" src="https://raw.githubusercontent.com/eutiveumsonho/.github/main/profile/assets/logo-512x512.png" height="192" width="192" />
   <h3 align="center">Human-in-the-loop back-office service</h3>

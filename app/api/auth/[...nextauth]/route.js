@@ -1,30 +1,30 @@
-import clientPromise from "@/lib/mongodb"
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
-import NextAuth from "next-auth"
+import clientPromise from "@/lib/mongodb";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import NextAuth from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import { createTransport } from "nodemailer";
 
 async function sendVerificationRequest(params) {
-  const { identifier, url, provider, theme } = params
+  const { identifier, url, provider, theme } = params;
 
-  const allowedEmails = process.env.ALLOWED_EMAILS?.split(",") ?? []
+  const allowedEmails = process.env.ALLOWED_EMAILS?.split(",") ?? [];
   if (!allowedEmails.includes(identifier)) {
-    throw new Error("Email could not be sent")
+    throw new Error("Email could not be sent");
   }
 
-  const { host } = new URL(url)
+  const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
-  const transport = createTransport(provider.server)
+  const transport = createTransport(provider.server);
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,
     subject: `Sign in to ${host}`,
     text: text({ url, host }),
     html: html({ url, host, theme }),
-  })
-  const failed = result.rejected.concat(result.pending).filter(Boolean)
+  });
+  const failed = result.rejected.concat(result.pending).filter(Boolean);
   if (failed.length) {
-    throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`)
+    throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
   }
 }
 
@@ -37,11 +37,11 @@ async function sendVerificationRequest(params) {
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
 function html(params) {
-  const { url, host, theme } = params
+  const { url, host, theme } = params;
 
-  const escapedHost = host.replace(/\./g, "&#8203;.")
+  const escapedHost = host.replace(/\./g, "&#8203;.");
 
-  const brandColor = theme.brandColor || "#346df1"
+  const brandColor = theme.brandColor || "#346df1";
   const color = {
     background: "#f9f9f9",
     text: "#444",
@@ -49,7 +49,7 @@ function html(params) {
     buttonBackground: brandColor,
     buttonBorder: brandColor,
     buttonText: theme.buttonText || "#fff",
-  }
+  };
 
   return `
 <body style="background: ${color.background};">
@@ -81,12 +81,12 @@ function html(params) {
     </tr>
   </table>
 </body>
-`
+`;
 }
 
 /** Email Text body (fallback for email clients that don't render HTML, e.g. feature phones) */
 function text({ url, host }) {
-  return `Sign in to ${host}\n${url}\n\n`
+  return `Sign in to ${host}\n${url}\n\n`;
 }
 
 export const authOptions = {
@@ -103,11 +103,11 @@ export const authOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
-      sendVerificationRequest
+      sendVerificationRequest,
     }),
   ],
-}
+};
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
