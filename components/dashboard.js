@@ -15,7 +15,7 @@ import {
   Grommet,
   grommet,
 } from "grommet";
-import { Logout, DocumentTest } from "grommet-icons";
+import { Logout, DocumentTest, Contract } from "grommet-icons";
 import { BRAND_HEX } from "../lib/config";
 import { Logo } from "./logo";
 import { usePathname, useRouter } from "next/navigation";
@@ -62,7 +62,7 @@ const SidebarButton = ({ icon, label, selected, ...rest }) => (
       ...rest.style,
       whiteSpace: "nowrap",
       height: "3rem",
-      paddingLeft: "3rem",
+      paddingLeft: "2rem",
       flex: "unset",
       background: selected ? BRAND_HEX : "transparent",
       color: selected ? "white" : "unset",
@@ -73,9 +73,20 @@ const SidebarButton = ({ icon, label, selected, ...rest }) => (
 const SidebarFooter = (props) => {
   const { size, deviceType } = props;
 
+  const { push } = useRouter();
+  const pathname = usePathname();
+
+  const apiManagement = "/api-management";
+
   if (deviceType === "mobile" || size === "small") {
     return (
       <Nav gap="small">
+        <Button
+          icon={<Contract />}
+          hoverIndicator={pathname !== apiManagement}
+          primary={pathname === apiManagement}
+          onClick={() => push(apiManagement)}
+        />
         <Button
           icon={<Logout />}
           hoverIndicator
@@ -91,6 +102,12 @@ const SidebarFooter = (props) => {
 
   return (
     <Nav>
+      <SidebarButton
+        icon={<Contract />}
+        label={"API Management"}
+        selected={pathname === apiManagement}
+        onClick={() => push(apiManagement)}
+      />
       <SidebarButton
         icon={<Logout />}
         label={"Logout"}
@@ -124,7 +141,7 @@ const MainNavigation = (props) => {
           icon={<DocumentTest />}
           hoverIndicator={!matchCompletions}
           primary={matchCompletions}
-          onClick={() => push(completions)}
+          onClick={() => push(completions + "pending")}
         />
       </Nav>
     );
@@ -136,7 +153,7 @@ const MainNavigation = (props) => {
         icon={<DocumentTest />}
         label={"Completions"}
         selected={matchCompletions}
-        onClick={() => push(completions)}
+        onClick={() => push(completions + "pending")}
       />
     </Nav>
   );
