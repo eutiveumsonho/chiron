@@ -1,18 +1,19 @@
+import crypto from "crypto";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { saveApiKeys } from "@/lib/db/writes";
 import { encrypt } from "@/lib/encryption";
 
-export async function POST(req, res) {
-  const session = await getServerSession(req, res, authOptions);
+export async function POST(req) {
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
   try {
-    const { vendorName, vendorUrl } = await req.body;
+    const { vendorName, vendorUrl } = await req.json();
 
     if (!vendorUrl) {
       throw new Error("You must enter a vendor URL.");
@@ -43,9 +44,17 @@ export async function POST(req, res) {
       createdBy: session.user.email,
     };
 
-    await saveApiKeys(data);
+    const result = await saveApiKeys(data);
 
-    return new NextResponse("Created", {
+    if (!result?.insertedId) {
+      console.error("Failed to insert API key into database");
+
+      return new NextResponse("Error", {
+        status: 500,
+      });
+    }
+
+    return new NextResponse(JSON.stringify({ vendorId, apiKey }), {
       status: 201,
     });
   } catch (error) {

@@ -1,11 +1,9 @@
 "use client";
 
 import { Box, Button, Text } from "grommet";
-import { useRouter } from "next/navigation";
 
 export default function Empty(props) {
   const { empty } = props;
-  const { push } = useRouter();
 
   return (
     <Box gap="small" pad="xlarge" align="center">
@@ -16,12 +14,12 @@ export default function Empty(props) {
       >
         {empty.description}
       </Text>
-      {empty?.label && empty?.actionRoute ? (
+      {empty?.label && empty?.callback ? (
         <Box>
           <Button
             label={empty.label}
             primary
-            onClick={() => push(empty.actionRoute)}
+            onClick={() => empty.callback()}
           />
         </Box>
       ) : null}

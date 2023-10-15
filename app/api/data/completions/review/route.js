@@ -23,12 +23,14 @@ export async function POST(req) {
     return new NextResponse(JSON.stringify("Unauthorized"), { status: 401 });
   }
 
-  if (!req.body._id && !req.body.direction) {
+  const body = await req.json();
+
+  if (!body._id && !body.direction) {
     return new NextResponse(JSON.stringify("Bad Request"), { status: 400 });
   }
 
   try {
-    const { _id, direction } = req.body;
+    const { _id, direction } = body;
     validateDirection(direction);
 
     const result = await reviewCompletion(_id, direction);

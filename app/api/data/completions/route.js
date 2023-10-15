@@ -37,14 +37,16 @@ export async function POST(req) {
     });
   }
 
-  if (!req.body) {
+  const body = await req.json();
+
+  if (!body) {
     return new NextResponse("Bad Request", {
       status: 400,
     });
   }
 
   try {
-    await saveCompletion(req.body);
+    await saveCompletion(body);
 
     return new NextResponse("Created", {
       status: 201,
