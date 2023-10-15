@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Create mocked .env.local with required variables
+        run: |
+          echo MONGODB_URI=mongodb://mongo                 > .env.local
+          echo MONGODB_DB=mongodb                          >> .env.local
+          echo ENCRYPTION_KEY=encryption_key               >> .env.local
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: 1

@@ -8,7 +8,7 @@
 
 ## Development
 
-Create a `.env.local` file based on the [`.env.example`](.env.example) file. You will need access to a SMTP server credentials and to set up an encryption key to spin this service. You can generate a key using the following command:
+Create a `.env.local` file based on the [`.env.example`](.env.example) file. You will need access to a SMTP server credentials, a MongoDB instance and to set up an encryption key to spin this service. You can generate a key using the following command:
 
 ```sh
 openssl rand -base64 32
@@ -30,6 +30,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Deployment
 
-This project is deployed using [Vercel](https://vercel.com/). You can deploy your own instance using the button below:
+Before deploying this service, make sure you have access to a:
+- SMTP server
+- MongoDB instance
+
+Take a look at the `.env.example` file to see which environment variables you need to set up.
+
+This project is deployed using [Vercel](https://vercel.com/). You can deploy your own instance using the button below (feel free to deploy it anywhere else):
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/eutiveumsonho/hitl)
