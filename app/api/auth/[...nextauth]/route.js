@@ -106,6 +106,7 @@ export const authOptions = {
       sendVerificationRequest,
     }),
   ],
+  session: { strategy: "jwt" },
 };
 
 const handler = NextAuth(authOptions);

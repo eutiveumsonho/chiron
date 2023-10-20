@@ -9,9 +9,18 @@ export async function GET() {
   if (!session) {
     return new NextResponse(JSON.stringify([]), { status: 401 });
   }
-  const rejectedCompletions = await getRejectedCompletions();
 
-  return new NextResponse(JSON.stringify(rejectedCompletions), {
-    status: 200,
-  });
+  try {
+    const rejectedCompletions = await getRejectedCompletions();
+
+    return new NextResponse(JSON.stringify(rejectedCompletions), {
+      status: 200,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return new NextResponse(JSON.stringify("Internal Server Error"), {
+      status: 500,
+    });
+  }
 }

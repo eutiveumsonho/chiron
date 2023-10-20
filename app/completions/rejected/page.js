@@ -1,9 +1,8 @@
 import Empty from "@/components/empty";
+import { f } from "@/lib/fetch";
 
 export default async function Home() {
-  const res = await fetch(
-    process.env.NEXTAUTH_URL + "/api/data/completions/rejected",
-  );
+  const res = await f("/api/data/completions/rejected");
   const rejectedCompletions = await res.json();
 
   if (!rejectedCompletions || rejectedCompletions.length === 0) {

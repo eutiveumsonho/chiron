@@ -5,7 +5,6 @@ import Dashboard from "@/components/dashboard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { StyledComponentsRegistry } from "@/components/styled-registry";
-import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Human-in-the-loop",
@@ -14,10 +13,6 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return redirect("/api/auth/signin");
-  }
 
   return (
     <html lang="en">

@@ -260,8 +260,13 @@ export default function Dashboard(props) {
 
   return (
     <>
-      {" "}
-      <Grommet full theme={grommet}>
+      <Grommet
+        full
+        theme={grommet}
+        style={{
+          overflow: "hidden",
+        }}
+      >
         <Header
           pad="small"
           style={{
@@ -296,11 +301,15 @@ export default function Dashboard(props) {
               deviceType={deviceType}
             />
             <PageContent
+              pad="medium"
               style={{
                 width: isSmall
                   ? `calc(100vw - ${MOBILE_SIDEBAR_WIDTH})`
                   : `calc(100vw - ${DESKTOP_SIDEBAR_WIDTH})`,
                 minHeight: isSmall
+                  ? `calc(100vh - ${MOBILE_HEADER_HEIGHT})`
+                  : `calc(100vh - ${DESKTOP_HEADER_HEIGHT})`,
+                maxHeight: isSmall
                   ? `calc(100vh - ${MOBILE_HEADER_HEIGHT})`
                   : `calc(100vh - ${DESKTOP_HEADER_HEIGHT})`,
                 minWidth: "0px",
@@ -310,6 +319,7 @@ export default function Dashboard(props) {
                 marginLeft: isSmall
                   ? MOBILE_SIDEBAR_WIDTH
                   : DESKTOP_SIDEBAR_WIDTH,
+                overflow: "auto",
               }}
             >
               {children}
