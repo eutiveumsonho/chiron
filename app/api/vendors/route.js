@@ -1,12 +1,18 @@
 import crypto from "crypto";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { saveApiKeys } from "@/lib/db/writes";
 import { encrypt } from "@/lib/encryption";
 import { getApiKeys } from "@/lib/db/reads";
+import { getServerSession } from "next-auth/next";
 
 export async function POST(req) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new NextResponse(JSON.stringify([]), { status: 401 });
+  }
+
   try {
     const { vendorName, vendorUrl } = await req.json();
 
@@ -62,6 +68,12 @@ export async function POST(req) {
 }
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new NextResponse(JSON.stringify([]), { status: 401 });
+  }
+
   try {
     const vendors = await getApiKeys();
 

@@ -1,10 +1,17 @@
 import { getApiKey } from "@/lib/db/reads";
 import { saveCompletion } from "@/lib/db/writes";
 import { decrypt } from "@/lib/encryption";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const { vendorId, apiKey } = req.headers;
+  const headersList = headers();
+
+  const [originHost, vendorId, apiKey] = [
+    headersList.get("host"),
+    headersList.get("vendorId"),
+    headersList.get("apiKey"),
+  ];
 
   if (!vendorId) {
     return new NextResponse("Bad Request", {
@@ -20,20 +27,19 @@ export async function POST(req) {
 
   const result = await getApiKey(vendorId);
 
+  const { host: vendorHost } = new URL(result.vendorUrl);
+
+  if (vendorHost !== originHost) {
+    return new NextResponse("Forbidden", {
+      status: 403,
+    });
+  }
+
   const decryptedApiKey = decrypt(result.apiKey);
 
   if (decryptedApiKey !== apiKey) {
     return new NextResponse("Unauthorized", {
       status: 401,
-    });
-  }
-
-  const { origin } = new URL(result.vendorUrl);
-  const { origin: requestOrigin } = new URL(req.headers.referer);
-
-  if (origin !== requestOrigin) {
-    return new NextResponse("Forbidden", {
-      status: 403,
     });
   }
 
