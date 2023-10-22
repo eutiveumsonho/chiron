@@ -81,6 +81,7 @@ export default function ApiManagementContainer(props) {
     <>
       <Heading>API Management</Heading>
       <Button label="Add" onClick={onOpen} />
+      <br />
       <List
         data={vendors}
         pad={{ left: "small", right: "none" }}

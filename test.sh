@@ -1,11 +1,14 @@
 #!/bin/bash
 
+uuid=$(uuidgen)
+
 # Request 1 - with valid vendorId and apiKey headers
 response1=$(curl -X POST \
   http://localhost:3000/api/data/completions \
   -H 'vendorId: 572FCEFE637B8AC7' \
   -H 'apiKey: 25kcnWwj1G51wavfyK0vJyvx4sWisksypyI4kV7P3m/3W1oEpPEjizXDHm2bWFIM0u2Ir42mx/TZXd4ioQBTqA==' \
   -d '{
+    "_id": "'$uuid'",
     "property1": "value1",
     "property2": "value2"
 }')

@@ -1,3 +1,4 @@
+import { CHIRON_FOREIGN_KEY, CHIRON_VENDOR_ID } from "@/lib/config";
 import { getApiKey } from "@/lib/db/reads";
 import { saveCompletion } from "@/lib/db/writes";
 import { decrypt } from "@/lib/encryption";
@@ -45,14 +46,22 @@ export async function POST(req) {
 
   const body = await req.json();
 
-  if (!body) {
+  if (!body || !body?._id) {
     return new NextResponse("Bad Request", {
       status: 400,
     });
   }
 
+  const data = {
+    ...body,
+    [CHIRON_VENDOR_ID]: vendorId,
+    [CHIRON_FOREIGN_KEY]: body._id,
+  };
+
+  delete data._id;
+
   try {
-    await saveCompletion(body);
+    await saveCompletion(data);
 
     return new NextResponse("Created", {
       status: 201,

@@ -1,4 +1,6 @@
 import Empty from "@/components/empty";
+import { CompletionsContainer } from "@/containers/completions";
+import { CHIRON_FOREIGN_KEY, CHIRON_VENDOR_ID } from "@/lib/config";
 import { f } from "@/lib/fetch";
 
 export default async function PendingCompletionsReviewPage() {
@@ -9,5 +11,22 @@ export default async function PendingCompletionsReviewPage() {
     return <Empty empty={{ description: "No pending reviews available" }} />;
   }
 
-  return <></>;
+  const completions = pendingReviews.map(
+    ({
+      [CHIRON_FOREIGN_KEY]: fk,
+      [CHIRON_VENDOR_ID]: vendorId,
+      ...completion
+    }) => {
+      return [
+        completion,
+        {
+          [CHIRON_FOREIGN_KEY]: fk,
+          [CHIRON_VENDOR_ID]: vendorId,
+          ...completion,
+        },
+      ];
+    },
+  );
+
+  return <CompletionsContainer completions={completions} />;
 }

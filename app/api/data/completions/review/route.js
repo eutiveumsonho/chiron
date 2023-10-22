@@ -25,15 +25,15 @@ export async function POST(req) {
 
   const body = await req.json();
 
-  if (!body._id && !body.direction) {
+  if (!body?.data?._id && !body.direction) {
     return new NextResponse(JSON.stringify("Bad Request"), { status: 400 });
   }
 
   try {
-    const { _id, direction } = body;
+    const { direction, data } = body;
     validateDirection(direction);
 
-    const result = await reviewCompletion(_id, direction);
+    const result = await reviewCompletion(data, direction);
 
     return new NextResponse(JSON.stringify(result), {
       status: 200,
