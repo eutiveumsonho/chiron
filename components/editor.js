@@ -1,14 +1,14 @@
-import { DiffEditor } from "@monaco-editor/react";
+import { DiffEditor, Editor } from "@monaco-editor/react";
 import { useEffect } from "react";
 
 export function ScriptEditor(props) {
   const {
     code,
     originalCode,
-    editorOptions,
     onInitializePane,
     monacoEditorRef,
     editorRef,
+    readOnly,
   } = props;
 
   useEffect(() => {
@@ -21,6 +21,24 @@ export function ScriptEditor(props) {
     }
   }, []);
 
+  if (readOnly) {
+    return (
+      <Editor
+        height="42.9rem"
+        language="json"
+        onMount={(editor, monaco) => {
+          monacoEditorRef.current = monaco.editor;
+          editorRef.current = editor;
+        }}
+        options={{
+          readOnly: true,
+        }}
+        theme="light"
+        defaultValue={originalCode}
+      />
+    );
+  }
+
   return (
     <DiffEditor
       height="42.9rem"
@@ -29,7 +47,6 @@ export function ScriptEditor(props) {
         monacoEditorRef.current = monaco.editor;
         editorRef.current = editor;
       }}
-      options={editorOptions}
       theme="light"
       modified={code}
       original={originalCode}

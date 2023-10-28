@@ -26,7 +26,11 @@ export default function ApiManagementContainer(props) {
   const onSubmit = async (event) => {
     setSubmitting(true);
     const {
-      value: { name: vendorName, url: vendorUrl },
+      value: {
+        name: vendorName,
+        url: vendorUrl,
+        callbackUrl: vendorCallbackUrl,
+      },
     } = event;
 
     const formattedUrl = new URL(vendorUrl);
@@ -34,6 +38,7 @@ export default function ApiManagementContainer(props) {
     const data = {
       vendorName,
       vendorUrl: formattedUrl.origin,
+      vendorCallbackUrl,
     };
 
     const response = await fetch("/api/vendors", {
@@ -165,7 +170,33 @@ function Form(props) {
       >
         <TextInput name="url" aria-label="url" type="url" />
       </FormField>
-      {/* TODO: Add callback URL field */}
+      <FormField
+        label="Callback URL"
+        name="url"
+        required
+        validate={[
+          (url) => {
+            try {
+              new URL(url);
+            } catch (error) {
+              console.error(error);
+              return "must be a valid url";
+            }
+          },
+          () => {
+            return {
+              message: (
+                <Box align="end">
+                  <StatusGood />
+                </Box>
+              ),
+              status: "info",
+            };
+          },
+        ]}
+      >
+        <TextInput name="callbackUrl" aria-label="url" type="url" />
+      </FormField>
     </FormPopUp>
   );
 }

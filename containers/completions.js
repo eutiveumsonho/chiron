@@ -9,6 +9,7 @@ import {
   CHIRON_FOREIGN_KEY,
   CHIRON_VENDOR_ID,
 } from "@/lib/config";
+import { usePathname } from "next/navigation";
 
 const chironIdxKey = CHIRON_PREFIX + "idx";
 
@@ -18,6 +19,9 @@ export function CompletionsContainer(props) {
   const [reviewing, setReviewing] = useState(false);
   const monacoEditorRef = useRef(null);
   const editorRef = useRef(null);
+  const pathname = usePathname();
+
+  const readOnly = pathname !== "/completions/pending";
 
   const onInitializePane = (_, __, model) => {
     editorRef.current.focus();
@@ -94,31 +98,34 @@ export function CompletionsContainer(props) {
             onInitializePane={onInitializePane}
             editorRef={editorRef}
             monacoEditorRef={monacoEditorRef}
+            readOnly={readOnly}
           />
-          <Box
-            align="center"
-            justify="center"
-            direction="row"
-            pad="large"
-            gap="medium"
-          >
-            <Button
-              label="Approve"
-              icon={<Like />}
-              disabled={reviewing}
-              primary
-              color="neutral-1"
-              onClick={() => onReview("pending2approve")}
-            />
-            <Button
-              label="Reject"
-              icon={<Dislike />}
-              disabled={reviewing}
-              primary
-              color="neutral-4"
-              onClick={() => onReview("pending2reject")}
-            />
-          </Box>
+          {readOnly ? null : (
+            <Box
+              align="center"
+              justify="center"
+              direction="row"
+              pad="large"
+              gap="medium"
+            >
+              <Button
+                label="Approve"
+                icon={<Like />}
+                disabled={reviewing}
+                primary
+                color="neutral-1"
+                onClick={() => onReview("pending2approve")}
+              />
+              <Button
+                label="Reject"
+                icon={<Dislike />}
+                disabled={reviewing}
+                primary
+                color="neutral-4"
+                onClick={() => onReview("pending2reject")}
+              />
+            </Box>
+          )}
         </Box>
       ) : null}
     </Box>

@@ -1,6 +1,8 @@
 #!/bin/bash
 
 uuid=$(uuidgen)
+random_str=$(shuf -er -n8  {A..Z} {a..z} {0..9} | paste -sd "")
+
 
 # Request 1 - with valid vendorId and apiKey headers
 response1=$(curl -X POST \
@@ -9,8 +11,8 @@ response1=$(curl -X POST \
   -H 'apiKey: 25kcnWwj1G51wavfyK0vJyvx4sWisksypyI4kV7P3m/3W1oEpPEjizXDHm2bWFIM0u2Ir42mx/TZXd4ioQBTqA==' \
   -d '{
     "_id": "'$uuid'",
-    "property1": "value1",
-    "property2": "value2"
+    "property1": "'$random_str'",
+    "property2": "'$random_str'"
 }')
 
 if [[ $response1 == *"Bad Request"* ]]; then

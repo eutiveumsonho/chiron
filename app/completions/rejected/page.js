@@ -1,4 +1,6 @@
 import Empty from "@/components/empty";
+import { CompletionsContainer } from "@/containers/completions";
+import { CHIRON_FOREIGN_KEY, CHIRON_VENDOR_ID } from "@/lib/config";
 import { f } from "@/lib/fetch";
 
 export default async function Home() {
@@ -11,16 +13,22 @@ export default async function Home() {
     );
   }
 
-  return (
-    <main>
-      {rejectedCompletions.map((review) => {
-        return (
-          <div key={review._id}>
-            <h1>question</h1>
-            <p>answer</p>
-          </div>
-        );
-      })}
-    </main>
+  const completions = rejectedCompletions.map(
+    ({
+      [CHIRON_FOREIGN_KEY]: fk,
+      [CHIRON_VENDOR_ID]: vendorId,
+      ...completion
+    }) => {
+      return [
+        completion,
+        {
+          [CHIRON_FOREIGN_KEY]: fk,
+          [CHIRON_VENDOR_ID]: vendorId,
+          ...completion,
+        },
+      ];
+    },
   );
+
+  return <CompletionsContainer completions={completions} />;
 }

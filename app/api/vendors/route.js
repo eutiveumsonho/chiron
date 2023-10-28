@@ -14,7 +14,7 @@ export async function POST(req) {
   }
 
   try {
-    const { vendorName, vendorUrl } = await req.json();
+    const { vendorName, vendorUrl, vendorCallbackUrl } = await req.json();
 
     if (!vendorUrl) {
       throw new Error("You must enter a vendor URL.");
@@ -24,8 +24,15 @@ export async function POST(req) {
       throw new Error("You must enter a vendor name.");
     }
 
+    if (!vendorCallbackUrl) {
+      throw new Error("You must enter a vendor callback URL.");
+    }
+
     // Validate URL
     new URL(vendorUrl);
+
+    // Validate callback URL
+    new URL(vendorCallbackUrl);
 
     const vendorId = crypto.randomBytes(8).toString("hex").toUpperCase();
 
@@ -42,6 +49,7 @@ export async function POST(req) {
       apiKey: encrypt(apiKey),
       vendorName,
       vendorUrl,
+      vendorCallbackUrl,
       createdBy: session.user.email,
     };
 
