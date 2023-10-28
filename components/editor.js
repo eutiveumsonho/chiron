@@ -34,7 +34,7 @@ export function ScriptEditor(props) {
           readOnly: true,
         }}
         theme="light"
-        defaultValue={originalCode}
+        value={code}
       />
     );
   }
