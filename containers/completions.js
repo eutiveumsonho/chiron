@@ -36,10 +36,10 @@ export function CompletionsContainer(props) {
       return completion[0]._id === JSON.parse(selected.item)._id;
     })[1];
 
-    if (
-      !completionWithForeignKey?.[CHIRON_VENDOR_ID] ||
-      !completionWithForeignKey?.[CHIRON_FOREIGN_KEY]
-    ) {
+    const vendorId = completionWithForeignKey?.[CHIRON_VENDOR_ID];
+    const foreignKey = completionWithForeignKey?.[CHIRON_FOREIGN_KEY];
+
+    if (!vendorId || !foreignKey) {
       setReviewing(false);
       return alert("Missing data");
     }
@@ -50,8 +50,8 @@ export function CompletionsContainer(props) {
         direction,
         data: {
           ...JSON.parse(data),
-          [CHIRON_VENDOR_ID]: selected[CHIRON_VENDOR_ID],
-          [CHIRON_FOREIGN_KEY]: selected[CHIRON_FOREIGN_KEY],
+          [CHIRON_VENDOR_ID]: vendorId,
+          [CHIRON_FOREIGN_KEY]: foreignKey,
         },
       }),
     });
@@ -59,6 +59,7 @@ export function CompletionsContainer(props) {
     if (res.status !== 200) {
       alert(res.statusText);
     } else {
+      // TODO: Refetch on success to refresh data in the UI
       alert("Sucess");
     }
 
