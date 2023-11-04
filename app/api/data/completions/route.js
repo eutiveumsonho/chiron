@@ -15,13 +15,13 @@ export async function POST(req) {
   ];
 
   if (!vendorId) {
-    return new NextResponse("Bad Request", {
+    return new NextResponse(JSON.stringify("Bad Request"), {
       status: 400,
     });
   }
 
   if (!apiKey) {
-    return new NextResponse("Bad Request", {
+    return new NextResponse(JSON.stringify("Bad Request"), {
       status: 400,
     });
   }
@@ -31,7 +31,7 @@ export async function POST(req) {
   const { host: vendorHost } = new URL(result.vendorUrl);
 
   if (vendorHost !== originHost) {
-    return new NextResponse("Forbidden", {
+    return new NextResponse(JSON.stringify("Forbidden"), {
       status: 403,
     });
   }
@@ -39,7 +39,7 @@ export async function POST(req) {
   const decryptedApiKey = decrypt(result.apiKey);
 
   if (decryptedApiKey !== apiKey) {
-    return new NextResponse("Unauthorized", {
+    return new NextResponse(JSON.stringify("Unauthorized"), {
       status: 401,
     });
   }
@@ -47,7 +47,7 @@ export async function POST(req) {
   const body = await req.json();
 
   if (!body || !body?._id) {
-    return new NextResponse("Bad Request", {
+    return new NextResponse(JSON.stringify("Bad Request"), {
       status: 400,
     });
   }
@@ -63,13 +63,13 @@ export async function POST(req) {
   try {
     await saveCompletion(data);
 
-    return new NextResponse("Created", {
+    return new NextResponse(JSON.stringify("Created"), {
       status: 201,
     });
   } catch (error) {
     console.error(error);
 
-    return new NextResponse("Error", {
+    return new NextResponse(JSON.stringify("Error"), {
       status: 500,
     });
   }

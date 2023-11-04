@@ -9,7 +9,7 @@ export default async function Home() {
 
   if (!rejectedCompletions || rejectedCompletions.length === 0) {
     return (
-      <Empty empty={{ description: "No completions were rejected yet" }} />
+      <Empty empty={{ description: "No completions were rejected yet 🤗" }} />
     );
   }
 

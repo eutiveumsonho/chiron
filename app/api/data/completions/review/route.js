@@ -35,6 +35,10 @@ export async function POST(req) {
 
     const result = await reviewCompletion(data, direction);
 
+    if (result?.acknowledged || result?.insertedId) {
+      // TODO: Call the vendor's webhook based on the result property
+    }
+
     return new NextResponse(JSON.stringify(result), {
       status: 200,
     });

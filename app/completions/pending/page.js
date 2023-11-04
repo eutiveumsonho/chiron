@@ -8,7 +8,7 @@ export default async function PendingCompletionsReviewPage() {
   const pendingReviews = await res.json();
 
   if (!pendingReviews || pendingReviews.length === 0) {
-    return <Empty empty={{ description: "No pending reviews available" }} />;
+    return <Empty empty={{ description: "No pending reviews available 🤗" }} />;
   }
 
   const completions = pendingReviews.map(

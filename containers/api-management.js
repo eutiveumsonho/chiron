@@ -9,6 +9,7 @@ import {
   Heading,
   List,
   Menu,
+  Text,
   TextInput,
 } from "grommet";
 import { useState } from "react";
@@ -89,6 +90,17 @@ export default function ApiManagementContainer(props) {
       <br />
       <List
         data={vendors}
+        primaryKey={(item) => (
+          <Text key={item.name} size="large" weight="bold">
+            {item.name}
+          </Text>
+        )}
+        secondaryKey={(item) => (
+          <Text key={item.callbackUrl} size="small" color="dark-4">
+            Callback URL: {item.callbackUrl}
+          </Text>
+        )}
+        itemKey={(item) => item.name}
         pad={{ left: "small", right: "none" }}
         action={(item, index) => (
           <Menu
