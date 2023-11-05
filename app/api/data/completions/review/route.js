@@ -1,4 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { CHIRON_VENDOR_ID } from "@/lib/config";
+import { getApiKey } from "@/lib/db/reads";
 import { reviewCompletion } from "@/lib/db/writes";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -36,7 +38,26 @@ export async function POST(req) {
     const result = await reviewCompletion(data, direction);
 
     if (result?.acknowledged || result?.insertedId) {
-      // TODO: Call the vendor's webhook based on the result property
+      const vendorId = data[CHIRON_VENDOR_ID];
+      const apiKey = await getApiKey(vendorId);
+
+      const { vendorCallbackUrl } = apiKey;
+
+      try {
+        await fetch(vendorCallbackUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+      } catch (error) {
+        console.error(error);
+
+        return new NextResponse(JSON.stringify("Internal Server Error"), {
+          status: 500,
+        });
+      }
     }
 
     return new NextResponse(JSON.stringify(result), {
