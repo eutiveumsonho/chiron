@@ -1,11 +1,10 @@
 import Empty from "@/components/empty";
 import { CompletionsContainer } from "@/containers/completions";
 import { CHIRON_FOREIGN_KEY, CHIRON_VENDOR_ID } from "@/lib/config";
-import { f } from "@/lib/fetch";
+import { getApprovedCompletions } from "@/lib/db/reads";
 
 export default async function Home() {
-  const res = await f("/api/data/completions/approved");
-  const approvedCompletions = await res.json();
+  const approvedCompletions = await getApprovedCompletions();
 
   if (!approvedCompletions || approvedCompletions.length === 0) {
     return (

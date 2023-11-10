@@ -1,11 +1,10 @@
 import Empty from "@/components/empty";
 import { CompletionsContainer } from "@/containers/completions";
 import { CHIRON_FOREIGN_KEY, CHIRON_VENDOR_ID } from "@/lib/config";
-import { f } from "@/lib/fetch";
+import { getRejectedCompletions } from "@/lib/db/reads";
 
 export default async function Home() {
-  const res = await f("/api/data/completions/rejected");
-  const rejectedCompletions = await res.json();
+  const rejectedCompletions = await getRejectedCompletions();
 
   if (!rejectedCompletions || rejectedCompletions.length === 0) {
     return (
