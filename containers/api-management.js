@@ -14,9 +14,11 @@ import {
 } from "grommet";
 import { useState } from "react";
 import { StatusGood, More } from "grommet-icons";
+import { useRefreshData } from "@/lib/hooks";
 
 export default function ApiManagementContainer(props) {
   const { vendors } = props;
+  const { refresh } = useRefreshData();
 
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -27,11 +29,7 @@ export default function ApiManagementContainer(props) {
   const onSubmit = async (event) => {
     setSubmitting(true);
     const {
-      value: {
-        name: vendorName,
-        url: vendorUrl,
-        callbackUrl: vendorCallbackUrl,
-      },
+      value: { vendorName, vendorUrl, vendorCallbackUrl },
     } = event;
 
     const formattedUrl = new URL(vendorUrl);
@@ -58,6 +56,8 @@ export default function ApiManagementContainer(props) {
       so make sure you copy it and store it somewhere safe.`,
         JSON.stringify(data),
       );
+
+      refresh();
     }
 
     setSubmitting(false);
@@ -134,8 +134,7 @@ function Form(props) {
     >
       <FormField
         label="Vendor Name"
-        aria-label="name"
-        name="name"
+        name="vendorName"
         required
         validate={[
           { regexp: /^[a-z]/i },
@@ -154,10 +153,12 @@ function Form(props) {
             };
           },
         ]}
-      />
+      >
+        <TextInput name="vendorName" />
+      </FormField>
       <FormField
         label="Vendor URL"
-        name="url"
+        name="vendorUrl"
         required
         validate={[
           (url) => {
@@ -180,11 +181,11 @@ function Form(props) {
           },
         ]}
       >
-        <TextInput name="url" aria-label="url" type="url" />
+        <TextInput name="vendorUrl" aria-label="url" type="url" />
       </FormField>
       <FormField
         label="Callback URL"
-        name="url"
+        name="vendorCallbackUrl"
         required
         validate={[
           (url) => {
@@ -207,7 +208,7 @@ function Form(props) {
           },
         ]}
       >
-        <TextInput name="callbackUrl" aria-label="url" type="url" />
+        <TextInput name="vendorCallbackUrl" aria-label="url" type="url" />
       </FormField>
     </FormPopUp>
   );

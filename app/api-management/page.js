@@ -1,10 +1,8 @@
 import ApiManagementContainer from "@/containers/api-management";
-import { f } from "@/lib/fetch";
+import { getApiKeys } from "@/lib/db/reads";
 
 export default async function ApiManagementPage() {
-  const res = await f("/api/vendors");
-
-  const vendors = await res.json();
+  const vendors = await getApiKeys();
 
   return <ApiManagementContainer vendors={vendors} />;
 }

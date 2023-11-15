@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { saveApiKeys } from "@/lib/db/writes";
 import { encrypt } from "@/lib/encryption";
-import { getApiKeys } from "@/lib/db/reads";
 import { getServerSession } from "next-auth/next";
 
 export async function POST(req) {
@@ -65,28 +64,6 @@ export async function POST(req) {
 
     return new NextResponse(JSON.stringify({ vendorId, apiKey }), {
       status: 201,
-    });
-  } catch (error) {
-    console.error(error);
-
-    return new NextResponse("Error", {
-      status: 500,
-    });
-  }
-}
-
-export async function GET() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return new NextResponse(JSON.stringify([]), { status: 401 });
-  }
-
-  try {
-    const vendors = await getApiKeys();
-
-    return new NextResponse(JSON.stringify(vendors), {
-      status: 200,
     });
   } catch (error) {
     console.error(error);
