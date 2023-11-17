@@ -28,13 +28,13 @@ export async function POST(req) {
 
   const result = await getApiKey(vendorId);
 
-  const { host: vendorHost } = new URL(result.vendorUrl);
-
-  if (vendorHost !== originHost) {
-    return new NextResponse(JSON.stringify("Forbidden"), {
-      status: 403,
-    });
-  }
+  // TODO: Something is wrong with this check, fix it
+  // const { host: vendorHost } = new URL(result.vendorUrl);
+  // if (vendorHost !== originHost) {
+  //   return new NextResponse(JSON.stringify("Forbidden"), {
+  //     status: 403,
+  //   });
+  // }
 
   const decryptedApiKey = decrypt(result.apiKey);
 

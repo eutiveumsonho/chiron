@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default async function ApiManagementPage() {
+export default async function RootPage() {
   return redirect("/completions/pending");
 }
