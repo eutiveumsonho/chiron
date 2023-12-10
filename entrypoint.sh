@@ -4,6 +4,9 @@ set -e
 set -u
 
 echo "Starting jsdoc-builder-action"
+
+ls
+
 JSDOC_INPUT_FILES="$1"
 DESTINATION_GITHUB_USERNAME="$2"
 DESTINATION_REPOSITORY_NAME="$3"
