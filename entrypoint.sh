@@ -41,7 +41,7 @@ TARGET_DIR=$(mktemp -d)
 touch jsdoc.json
 echo '{"plugins": ["plugins/markdown", "plugins/summarize"],"recurseDepth": 50,"source": {"includePattern": ".+\\.js(doc|x)?$","excludePattern": "(^|\\/|\\\\)_"},"sourceType": "module","tags": {"allowUnknownTags": true,"dictionaries": ["jsdoc", "closure"]},"templates": {"cleverLinks": false,"monospaceLinks": false}}' > jsdoc.json
 
-jsdoc -r "$JSDOC_INPUT_FILES" -c jsdoc.json -d "$DOCS_DIRECTORY"
+jsdoc -r $JSDOC_INPUT_FILES -c jsdoc.json -d "$DOCS_DIRECTORY"
 
 cp -ra "$DOCS_DIRECTORY"/. "$TARGET_DIR"
 cd "$TARGET_DIR"
