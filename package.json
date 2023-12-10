@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -p [{name}] -n chiron,test-server -c bgMagenta,bgMagenta \"next dev\" \"wait-on tcp:3000 && bun run test\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "semantic-release": "semantic-release",
-    "test": "node -r dotenv/config tests.js"
+    "test": "node -r dotenv/config test-server.js"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^2.0.1",
@@ -27,6 +27,7 @@
     "styled-components": "5"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "dotenv": "^16.3.1",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
@@ -35,6 +36,7 @@
     "lint-staged": "^14.0.1",
     "monaco-editor-webpack-plugin": "^7.1.0",
     "prettier": "^3.0.3",
-    "semantic-release": "^22.0.5"
+    "semantic-release": "^22.0.5",
+    "wait-on": "^7.2.0"
   }
 }

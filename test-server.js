@@ -5,17 +5,30 @@ const vendorId = process.env.TEST_VENDOR_ID;
 const apiKey = process.env.TEST_API_KEY;
 const testApiPort = process.env.TEST_API_PORT;
 
+/**
+ * Generates a UUID to simulate a MongoDB ObjectId
+ *
+ * @returns {string}
+ */
 function generateUUID() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (c ^ (crypto.randomBytes(1)[0] & (15 >> (c / 4)))).toString(16),
   );
 }
 
+/**
+ * Generates a random string to simulate a completion property
+ *
+ * @returns {string}
+ */
 function generateRandomString() {
   return crypto.randomBytes(4).toString("hex");
 }
 
-// Create a server that listens to requests on port 3001
+/**
+ * Test API server that simulates a vendor's API.
+ * Upon start, it sends a POST request to the Chiron API with a fake completion.
+ */
 const server = http.createServer((req, res) => {
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");

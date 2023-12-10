@@ -10,6 +10,7 @@ import {
   CHIRON_VENDOR_ID,
 } from "@/lib/config";
 import { usePathname } from "next/navigation";
+import { useRefreshData } from "@/lib/hooks";
 
 const chironIdxKey = CHIRON_PREFIX + "idx";
 
@@ -20,6 +21,7 @@ export function CompletionsContainer(props) {
   const monacoEditorRef = useRef(null);
   const editorRef = useRef(null);
   const pathname = usePathname();
+  const { refresh } = useRefreshData();
 
   const readOnly = pathname !== "/completions/pending";
 
@@ -59,8 +61,8 @@ export function CompletionsContainer(props) {
     if (res.status !== 200) {
       alert(res.statusText);
     } else {
-      // TODO: Refetch on success to refresh data in the UI
       alert("Sucess");
+      refresh();
     }
 
     setReviewing(false);
