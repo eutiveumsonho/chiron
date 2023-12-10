@@ -36,15 +36,19 @@ git config --global user.name "$USER_NAME"
 git clone --single-branch --branch "$TARGET_BRANCH" "https://$USER_NAME:$API_TOKEN_GITHUB@github.com/$DESTINATION_REPOSITORY_USERNAME/$DESTINATION_REPOSITORY_NAME.git" "$CLONE_DIR"
 ls -la "$CLONE_DIR"
 
-TARGET_DIR=$(mktemp -d)
-
+echo "Generating jsdoc.json"
 touch jsdoc.json
 echo '{"plugins": ["plugins/markdown", "plugins/summarize"],"recurseDepth": 50,"source": {"includePattern": ".+\\.js(doc|x)?$","excludePattern": "(^|\\/|\\\\)_"},"sourceType": "module","tags": {"allowUnknownTags": true,"dictionaries": ["jsdoc", "closure"]},"templates": {"cleverLinks": false,"monospaceLinks": false}}' > jsdoc.json
+cat jsdoc.json
 
+echo "Generating documentation"
 jsdoc -r $JSDOC_INPUT_FILES -c jsdoc.json -d "$DOCS_DIRECTORY"
 
-cp -ra "$DOCS_DIRECTORY"/. "$TARGET_DIR"
-cd "$TARGET_DIR"
+echo "Copying documentation to destination git repository"
+ls -la "$DOCS_DIRECTORY"
+
+cp -ra "$DOCS_DIRECTORY"/. "$CLONE_DIR"
+cd "$CLONE_DIR"
 
 echo "Files that will be pushed:"
 ls -la
