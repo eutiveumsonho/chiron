@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Push output to docs repo
+      - name: Generate docs
         uses: ./
         env:
           API_TOKEN_GITHUB: ${{ secrets.DOCS_GEN_GH_TOKEN }}
