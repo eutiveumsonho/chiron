@@ -57,6 +57,11 @@ ORIGIN_COMMIT="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
 COMMIT_MESSAGE="${COMMIT_MESSAGE/ORIGIN_COMMIT/$ORIGIN_COMMIT}"
 COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
 
+source ./index_manager.sh
+
+create_index_html "."
+update_index_html "index.html" "<li><a href=\"./$DOCS_DIRECTORY/index.html\">$GITHUB_REF</a></li>"
+
 echo "git add:"
 git add .
 
