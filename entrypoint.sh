@@ -44,25 +44,26 @@ cat jsdoc.json
 echo "Generating documentation"
 jsdoc -r $JSDOC_INPUT_FILES -c jsdoc.json -d "$DOCS_DIRECTORY"
 
+echo "Loading index_manager and grabbing path to first html file"
+source index_manager.sh
+FIRST_HTML_FILE=$(find_first_html_file "$DOCS_DIRECTORY")
+
 echo "Copying documentation to destination git repository"
 ls -la "$DOCS_DIRECTORY"
 cp -ra "$DOCS_DIRECTORY"/. "$CLONE_DIR"
 
-echo "Copying templates and index_manager to destination git repository"
+echo "Copying templates to destination git repository"
 cp -ra templates/. "$CLONE_DIR"
-cp -ra index_manager.sh "$CLONE_DIR"
 
 echo "Changing directory to destination git repository"
 cd "$CLONE_DIR"
 
 echo "Generating or updating index.html"
-source index_manager.sh
 create_index_html "."
-update_index_html "index.html" "<li><a href=\"./$DOCS_DIRECTORY/index.html\">$GITHUB_REF</a></li>"
+update_index_html "index.html" "<li><a href=\"./$FIRST_HTML_FILE\">$FIRST_HTML_FILE</a></li>"
 
-echo "Deleting templates and index_manager from destination git repository"
+echo "Deleting templates from destination git repository"
 rm -rf templates
-rm index_manager.sh
 
 echo "Files that will be pushed:"
 ls -la
