@@ -48,6 +48,9 @@ echo "Loading index_manager and grabbing path to first html file"
 source index_manager.sh
 FIRST_HTML_FILE=$(find_first_html_file "$DOCS_DIRECTORY")
 
+echo "Removing DOCS_DIRECTORY from FIRST_HTML_FILE path"
+FIRST_HTML_FILE=${FIRST_HTML_FILE/$DOCS_DIRECTORY\//}
+
 echo "Copying documentation to destination git repository"
 ls -la "$DOCS_DIRECTORY"
 cp -ra "$DOCS_DIRECTORY"/. "$CLONE_DIR"
