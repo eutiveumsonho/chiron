@@ -1,3 +1,4 @@
+/** @module containers/completions */
 "use client";
 
 import { Box, Button, List } from "grommet";
@@ -14,6 +15,12 @@ import { useRefreshData } from "@/lib/hooks";
 
 const chironIdxKey = CHIRON_PREFIX + "idx";
 
+/**
+ * CompletionsContainer contains all logic for managing completions reviews
+ *
+ * @param {{ completions }} props
+ * @returns
+ */
 export function CompletionsContainer(props) {
   const { completions } = props;
   const [selected, setSelected] = useState();

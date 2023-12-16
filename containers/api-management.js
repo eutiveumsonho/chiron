@@ -1,3 +1,5 @@
+/** @module containers/api-management */
+
 "use client";
 
 import Empty from "@/components/empty";
@@ -16,6 +18,12 @@ import { useState } from "react";
 import { StatusGood, More } from "grommet-icons";
 import { useRefreshData } from "@/lib/hooks";
 
+/**
+ * The API Management container contains all logic for managing
+ * API keys for Chiron from the front-end.
+ *
+ * @param {{ vendors }} props Props received from the server
+ */
 export default function ApiManagementContainer(props) {
   const { vendors } = props;
   const { refresh } = useRefreshData();

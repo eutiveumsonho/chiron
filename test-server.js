@@ -1,3 +1,5 @@
+/** @module tests */
+
 const http = require("http");
 const crypto = require("crypto");
 
