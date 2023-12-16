@@ -19,7 +19,6 @@ const chironIdxKey = CHIRON_PREFIX + "idx";
  * CompletionsContainer contains all logic for managing completions reviews
  *
  * @param {{ completions }} props
- * @returns
  */
 export function CompletionsContainer(props) {
   const { completions } = props;
