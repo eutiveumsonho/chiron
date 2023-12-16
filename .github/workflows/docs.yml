@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Generate docs
-        uses: eutiveumsonho/jsdoc-builder-action@main
+        uses: eutiveumsonho/jsdoc-builder-action@fix/idx-html-update
         env:
           API_TOKEN_GITHUB: ${{ secrets.DOCS_GEN_GH_TOKEN }}
         with:
