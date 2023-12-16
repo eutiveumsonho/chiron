@@ -19,8 +19,7 @@ create_index_html () {
 # The new line of HTML will be added after the line that contains the comment <!-- @jsdoc-builder-action new-version -->
 update_index_html () {
     # If file already contains the input, skip it
-    grep -q "$2" "$1"
-    if [ $? -eq 0 ]; then
+    if grep -q "$2" "$1"; then
         echo "File already contains $2"
         return
     fi
