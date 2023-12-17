@@ -1,7 +1,7 @@
 /** @module containers/completions */
 "use client";
 
-import { Box, Button, List } from "grommet";
+import { Box, Button, List, Tag, Text } from "grommet";
 import { useRef, useState } from "react";
 import { Like, Dislike } from "grommet-icons";
 import ScriptEditor from "@/components/editor";
@@ -36,13 +36,19 @@ export function CompletionsContainer(props) {
     monacoEditorRef.current.setModelMarkers(model[0], "owner", null);
   };
 
+  const getCompletionWithForeignKey = (completionId) => {
+    return completions.find((completion) => {
+      return completion[0]._id === completionId;
+    })[1];
+  };
+
   const onReview = async (direction) => {
     setReviewing(true);
     const data = editorRef.current.getModifiedEditor().getValue();
 
-    const completionWithForeignKey = completions.find((completion) => {
-      return completion[0]._id === JSON.parse(selected.item)._id;
-    })[1];
+    const completionWithForeignKey = getCompletionWithForeignKey(
+      JSON.parse(selected.item)._id,
+    );
 
     const vendorId = completionWithForeignKey?.[CHIRON_VENDOR_ID];
     const foreignKey = completionWithForeignKey?.[CHIRON_FOREIGN_KEY];
@@ -77,6 +83,20 @@ export function CompletionsContainer(props) {
   return (
     <Box gap="medium">
       <List
+        primaryKey={(completion) => (
+          <Text key={completion._id} size="medium" weight="bold">
+            {completion._id}
+          </Text>
+        )}
+        secondaryKey={(completion) => (
+          <Tag
+            key={completion._id + "vendorId"}
+            size="small"
+            value={
+              getCompletionWithForeignKey(completion._id)?.[CHIRON_VENDOR_ID]
+            }
+          />
+        )}
         data={completions.map((completion) => completion[0])}
         itemProps={
           selected?.[chironIdxKey] >= 0
