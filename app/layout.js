@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { StyledComponentsRegistry } from "@/components/styled-registry";
 import { redirect } from "next/navigation";
+import { getUserAgentProps } from "@/lib/user-agent";
 
 export const metadata = {
   title: "Human-in-the-loop",
@@ -19,11 +20,15 @@ export default async function RootLayout({ children }) {
     return redirect("/api/auth/signin");
   }
 
+  const uaProps = getUserAgentProps();
+
   return (
     <html lang="en">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          <Dashboard serverSession={session}>{children}</Dashboard>
+          <Dashboard serverSession={session} {...uaProps}>
+            {children}
+          </Dashboard>
         </StyledComponentsRegistry>
       </body>
     </html>

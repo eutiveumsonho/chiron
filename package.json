@@ -15,6 +15,7 @@
     "@monaco-editor/react": "^4.6.0",
     "@sentry/nextjs": "^7.86.0",
     "exponential-backoff": "^3.1.1",
+    "express-useragent": "^1.0.15",
     "grommet": "^2.33.2",
     "monaco-editor": "^0.44.0",
     "mongodb": "^6.1.0",
