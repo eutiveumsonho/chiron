@@ -1,6 +1,6 @@
 {
   "name": "chiron",
-  "version": "0.1.0",
+  "version": "1.6.0",
   "private": true,
   "scripts": {
     "dev": "concurrently -p [{name}] -n chiron,test-server -c bgMagenta,bgMagenta \"next dev\" \"wait-on tcp:3000 && bun run test\"",
