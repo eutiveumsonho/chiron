@@ -89,13 +89,24 @@ export function CompletionsContainer(props) {
           </Text>
         )}
         secondaryKey={(completion) => (
-          <Tag
-            key={completion._id + "vendorId"}
-            size="small"
-            value={
-              getCompletionWithForeignKey(completion._id)?.[CHIRON_VENDOR_ID]
-            }
-          />
+          <Box direction="row" gap="xsmall">
+            {completions
+              .map((c) => c[0]._id === completion._id)
+              ?.filter(Boolean)?.length > 1 ? (
+              <Tag
+                key={completion._id + "duplicate"}
+                size="xsmall"
+                value={"Duplicate"}
+              />
+            ) : null}
+            <Tag
+              key={completion._id + "vendorId"}
+              size="xsmall"
+              value={
+                getCompletionWithForeignKey(completion._id)?.[CHIRON_VENDOR_ID]
+              }
+            />
+          </Box>
         )}
         data={completions.map((completion) => completion[0])}
         itemProps={
