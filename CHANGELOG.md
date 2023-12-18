@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/eutiveumsonho/chiron/compare/v1.6.0...v1.7.0) (2023-12-18)
+
+
+### Features
+
+* duplicate tag ([321fb71](https://github.com/eutiveumsonho/chiron/commit/321fb7134c9d14596dd44023c636ac7bf7dfc661))
+
 # [1.6.0](https://github.com/eutiveumsonho/chiron/compare/v1.5.0...v1.6.0) (2023-12-17)
 
 
