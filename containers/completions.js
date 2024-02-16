@@ -90,16 +90,6 @@ export function CompletionsContainer(props) {
         )}
         secondaryKey={(completion) => (
           <Box direction="row" gap="xsmall">
-            {completions
-              // TODO: abstract and generalize this is hack to identify duplicates
-              .map((c) => c[0]?.dreamId === completion?.dreamId)
-              ?.filter(Boolean)?.length > 1 ? (
-              <Tag
-                key={completion._id + "duplicate"}
-                size="xsmall"
-                value={"Duplicate"}
-              />
-            ) : null}
             <Tag
               key={completion._id + "vendorId"}
               size="xsmall"
