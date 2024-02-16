@@ -1,9 +1,9 @@
 /** @module containers/completions */
 "use client";
 
-import { Box, Button, List, Tag, Text } from "grommet";
+import { Box, Button, Heading, Layer, List, Tag, Text } from "grommet";
 import { useRef, useState } from "react";
-import { Like, Dislike } from "grommet-icons";
+import { Like, Dislike, Close } from "grommet-icons";
 import ScriptEditor from "@/components/editor";
 import {
   CHIRON_PREFIX,
@@ -128,46 +128,54 @@ export function CompletionsContainer(props) {
         pad={{ left: "small", right: "none", top: "small", bottom: "small" }}
       />
       {selected?.item ? (
-        <Box
-          height={{
-            min: "42.9rem",
-          }}
-        >
-          <ScriptEditor
-            code={selected.item}
-            originalCode={selected.item}
-            onInitializePane={onInitializePane}
-            editorRef={editorRef}
-            monacoEditorRef={monacoEditorRef}
-            readOnly={readOnly}
-          />
-          {readOnly ? null : (
-            <Box
-              align="center"
-              justify="center"
-              direction="row"
-              pad="large"
-              gap="medium"
-            >
-              <Button
-                label="Approve"
-                icon={<Like />}
-                disabled={reviewing}
-                primary
-                color="neutral-1"
-                onClick={() => onReview("pending2approve")}
-              />
-              <Button
-                label="Reject"
-                icon={<Dislike />}
-                disabled={reviewing}
-                primary
-                color="neutral-4"
-                onClick={() => onReview("pending2reject")}
-              />
-            </Box>
-          )}
-        </Box>
+        <Layer full animation="fadeIn">
+          <Box justify="between" align="center" pad="small" direction="row">
+            <Heading level={3} margin="none">
+              Review {JSON.parse(selected.item)._id}
+            </Heading>
+            <Button
+              icon={<Close />}
+              hoverIndicator
+              onClick={() => setSelected(undefined)}
+            />
+          </Box>
+          <Box fill align="center" justify="center" pad="small">
+            <ScriptEditor
+              code={selected.item}
+              originalCode={selected.item}
+              onInitializePane={onInitializePane}
+              editorRef={editorRef}
+              monacoEditorRef={monacoEditorRef}
+              readOnly={readOnly}
+            />
+            {readOnly ? null : (
+              <Box
+                align="center"
+                justify="center"
+                direction="row"
+                pad="large"
+                gap="medium"
+              >
+                <Button
+                  label="Approve"
+                  icon={<Like />}
+                  disabled={reviewing}
+                  primary
+                  color="neutral-1"
+                  onClick={() => onReview("pending2approve")}
+                />
+                <Button
+                  label="Reject"
+                  icon={<Dislike />}
+                  disabled={reviewing}
+                  primary
+                  color="neutral-4"
+                  onClick={() => onReview("pending2reject")}
+                />
+              </Box>
+            )}
+          </Box>
+        </Layer>
       ) : null}
     </Box>
   );
