@@ -2,6 +2,7 @@ import { CHIRON_FOREIGN_KEY, CHIRON_VENDOR_ID } from "@/lib/config";
 import { getApiKey } from "@/lib/db/reads";
 import { saveCompletion } from "@/lib/db/writes";
 import { decrypt } from "@/lib/encryption";
+import sendEmail from "@/lib/send-email";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -62,6 +63,12 @@ export async function POST(req) {
 
   try {
     await saveCompletion(data);
+
+    await sendEmail({
+      to: process.env.ALLOWED_EMAILS,
+      subject: "New completion",
+      text: `A new completion has been created for ${vendorId}`,
+    });
 
     return new NextResponse(JSON.stringify("Created"), {
       status: 201,
