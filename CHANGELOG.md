@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/eutiveumsonho/chiron/compare/v1.7.0...v1.8.0) (2024-02-17)
+
+
+### Features
+
+* notify owners by email on new completions ([14e6615](https://github.com/eutiveumsonho/chiron/commit/14e6615d3e97e9886286848723a0187484214480))
+
 # [1.7.0](https://github.com/eutiveumsonho/chiron/compare/v1.6.0...v1.7.0) (2023-12-18)
 
 
