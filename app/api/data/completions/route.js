@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   const headersList = headers();
 
-  const [originHost, vendorId, apiKey] = [
+  const [_, vendorId, apiKey] = [
     headersList.get("host"),
     headersList.get("vendorId"),
     headersList.get("apiKey"),
@@ -28,7 +28,7 @@ export async function POST(req) {
 
   const result = await getApiKey(vendorId);
 
-  // TODO: Something is wrong with this check, fix it
+  // TODO: Something is wrong with this check, fix me 🤗
   // const { host: vendorHost } = new URL(result.vendorUrl);
   // if (vendorHost !== originHost) {
   //   return new NextResponse(JSON.stringify("Forbidden"), {

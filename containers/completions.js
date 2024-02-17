@@ -1,8 +1,17 @@
 /** @module containers/completions */
 "use client";
 
-import { Box, Button, Heading, Layer, List, Tag, Text } from "grommet";
-import { useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  CheckBox,
+  Heading,
+  Layer,
+  List,
+  Tag,
+  Text,
+} from "grommet";
+import { useEffect, useRef, useState } from "react";
 import { Like, Dislike, Close } from "grommet-icons";
 import ScriptEditor from "@/components/editor";
 import {
@@ -24,6 +33,7 @@ export function CompletionsContainer(props) {
   const { completions } = props;
   const [selected, setSelected] = useState();
   const [reviewing, setReviewing] = useState(false);
+  const [focusOnContent, setFocusOnContent] = useState(false);
   const monacoEditorRef = useRef(null);
   const editorRef = useRef(null);
   const pathname = usePathname();
@@ -80,6 +90,22 @@ export function CompletionsContainer(props) {
     setReviewing(false);
   };
 
+  useEffect(() => {
+    if (!selected && focusOnContent) {
+      setFocusOnContent(false);
+    }
+  }, [selected]);
+
+  useEffect(() => {
+    if (selected && focusOnContent === true) {
+      const content = selected.item?.completion?.choices?.[0]?.message?.content;
+
+      if (content) {
+        setFocusOnContent(content);
+      }
+    }
+  }, [focusOnContent]);
+
   return (
     <Box gap="medium">
       <List
@@ -123,15 +149,28 @@ export function CompletionsContainer(props) {
             <Heading level={3} margin="none">
               Review {JSON.parse(selected.item)._id}
             </Heading>
-            <Button
-              icon={<Close />}
-              hoverIndicator
-              onClick={() => setSelected(undefined)}
-            />
+            <Box justify="center" align="center" direction="row" pad="xsmall">
+              <CheckBox
+                label="Focus on content"
+                checked={focusOnContent}
+                onChange={() => {
+                  setFocusOnContent(!focusOnContent);
+                }}
+              />
+              <Button
+                icon={<Close />}
+                hoverIndicator
+                onClick={() => setSelected(undefined)}
+              />
+            </Box>
           </Box>
           <Box fill align="center" justify="center" pad="small">
             <ScriptEditor
-              code={selected.item}
+              code={
+                typeof focusOnContent === "string"
+                  ? focusOnContent
+                  : selected.item
+              }
               originalCode={selected.item}
               onInitializePane={onInitializePane}
               editorRef={editorRef}
