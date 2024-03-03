@@ -13,7 +13,7 @@ import {
   Text,
   TextInput,
 } from "grommet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StatusGood, More } from "grommet-icons";
 import { useRefreshData } from "@/lib/hooks";
 
@@ -28,43 +28,64 @@ export default function ApiManagementContainer(props) {
   const { refresh } = useRefreshData();
 
   const [open, setOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const onOpen = () => setOpen(true);
   const onClose = () => setOpen(false);
 
+  useEffect(() => {
+    if (editMode) {
+      setOpen(true);
+    }
+  }, [editMode]);
+
+  useEffect(() => {
+    if (!open) {
+      setEditMode(false);
+    }
+  }, [open]);
+
   const onSubmit = async (event) => {
     setSubmitting(true);
     const {
-      value: { vendorName, vendorUrl, vendorCallbackUrl },
+      value: { vendorName, vendorUrl, vendorCallbackUrl, reviewInstructions },
     } = event;
 
     const formattedUrl = new URL(vendorUrl);
 
     const data = {
+      _id: editMode?._id,
       vendorName,
       vendorUrl: formattedUrl.origin,
       vendorCallbackUrl,
+      reviewInstructions,
     };
 
     const response = await fetch("/api/vendors", {
-      method: "POST",
+      method: editMode ? "PATCH" : "POST",
       body: JSON.stringify(data),
     });
 
     if (response.ok) {
-      onClose();
+      if (!editMode) {
+        onClose();
 
-      const data = await response.json();
+        const data = await response.json();
 
-      prompt(
-        `
+        prompt(
+          `
       This is the only time you will see this API key,
       so make sure you copy it and store it somewhere safe.`,
-        JSON.stringify(data),
-      );
+          JSON.stringify(data),
+        );
 
-      refresh();
+        refresh();
+      } else {
+        onClose();
+        alert("Updated successfully");
+        refresh();
+      }
     }
 
     setSubmitting(false);
@@ -114,7 +135,20 @@ export default function ApiManagementContainer(props) {
             key={index}
             icon={<More />}
             hoverIndicator
-            items={[{ label: "Delete" }]}
+            items={[
+              {
+                label: "Delete",
+                onClick: () => {
+                  // @todo delete vendor
+                },
+              },
+              {
+                label: "Edit",
+                onClick: () => {
+                  setEditMode(item);
+                },
+              },
+            ]}
           />
         )}
       />
@@ -123,13 +157,14 @@ export default function ApiManagementContainer(props) {
         onClose={onClose}
         onSubmit={onSubmit}
         submitting={submitting}
+        editMode={editMode}
       />
     </>
   );
 }
 
 function Form(props) {
-  const { onClose, open, onSubmit, submitting } = props;
+  const { onClose, open, onSubmit, submitting, editMode } = props;
 
   return (
     <FormPopUp
@@ -161,7 +196,7 @@ function Form(props) {
           },
         ]}
       >
-        <TextInput name="vendorName" />
+        <TextInput name="vendorName" value={editMode?.name} />
       </FormField>
       <FormField
         label="Vendor URL"
@@ -188,7 +223,12 @@ function Form(props) {
           },
         ]}
       >
-        <TextInput name="vendorUrl" aria-label="url" type="url" />
+        <TextInput
+          name="vendorUrl"
+          aria-label="url"
+          type="url"
+          value={editMode?.url}
+        />
       </FormField>
       <FormField
         label="Callback URL"
@@ -215,7 +255,22 @@ function Form(props) {
           },
         ]}
       >
-        <TextInput name="vendorCallbackUrl" aria-label="url" type="url" />
+        <TextInput
+          name="vendorCallbackUrl"
+          aria-label="url"
+          type="url"
+          value={editMode?.callbackUrl}
+        />
+      </FormField>
+      <FormField
+        label="Instructions for review"
+        name="reviewInstructions"
+        required
+      >
+        <TextInput
+          name="reviewInstructions"
+          value={editMode?.reviewInstructions}
+        />
       </FormField>
     </FormPopUp>
   );
