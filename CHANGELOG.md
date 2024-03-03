@@ -1,3 +1,11 @@
+# [1.9.0](https://github.com/eutiveumsonho/chiron/compare/v1.8.0...v1.9.0) (2024-03-03)
+
+
+### Features
+
+* display review instruction during review ([1ac586c](https://github.com/eutiveumsonho/chiron/commit/1ac586cf1db4b7dbb27ace7bf48e32f88db0c7ea))
+* review instructions ([1b4ed68](https://github.com/eutiveumsonho/chiron/commit/1b4ed681547cd4ce5b6a259f463fbef204cc81c4))
+
 # [1.8.0](https://github.com/eutiveumsonho/chiron/compare/v1.7.0...v1.8.0) (2024-02-17)
 
 
